@@ -1,58 +1,60 @@
-@extends('layouts.template')
+<x-guest-layout>
+    <x-auth-card>
+        <x-slot name="logo">
+            <a href="/">
+                <img src="/images/basket.png" alt="" width="35" height="26" class="d-inline-block align-text-top">
+                Belanja nih
+            </a>
+        </x-slot>
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+        <!-- Validation Errors -->
+        <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-                <div class="card-body">
-                    @if(count($errors) > 0)
-                    @foreach($errors->all() as $error)
-                        <div class="alert alert-warning">{{ $error }}</div>
-                    @endforeach
-                    @endif
-                    @if ($message = Session::get('error'))
-                        <div class="alert alert-warning">
-                            <p>{{ $message }}</p>
-                        </div>
-                    @endif
-                    @if ($message = Session::get('success'))
-                        <div class="alert alert-success">
-                            <p>{{ $message }}</p>
-                        </div>
-                    @endif
-                    <form method="POST" action="{{ route('register') }}">
-                        <div class="row">
-                            <div class="col">
-                                @csrf
-                                <div class="form-group">
-                                    <label for="name">Nama</label>
-                                    <input type="text" name="name" id="name" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="text" name="email" id="email" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="password">Password</label>
-                                    <input type="password" name="password" id="password" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="password_confirmation">Confirm Password</label>
-                                    <input type="password" name="password_confirmation" id="password_confirmation" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-primary mb-4">Register</button>
-                                    <p>Sudah punya akun? Login <a href="{{ route('login') }}" class="text-decoration-none">disini</a></p>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+        <form method="POST" action="{{ route('register') }}">
+            @csrf
+
+            <!-- Name -->
+            <div>
+                <x-label for="name" :value="__('Name')" />
+
+                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
             </div>
-        </div>
-    </div>
-</div>
-@endsection
+
+            <!-- Email Address -->
+            <div class="mt-4">
+                <x-label for="email" :value="__('Email')" />
+
+                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
+            </div>
+
+            <!-- Password -->
+            <div class="mt-4">
+                <x-label for="password" :value="__('Password')" />
+
+                <x-input id="password" class="block mt-1 w-full"
+                                type="password"
+                                name="password"
+                                required autocomplete="new-password" />
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mt-4">
+                <x-label for="password_confirmation" :value="__('Confirm Password')" />
+
+                <x-input id="password_confirmation" class="block mt-1 w-full"
+                                type="password"
+                                name="password_confirmation" required />
+            </div>
+
+            <div class="flex items-center justify-end mt-4">
+                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
+                    {{ __('Already registered?') }}
+                </a>
+
+                <x-button class="ml-4">
+                    {{ __('Register') }}
+                </x-button>
+            </div>
+        </form>
+    </x-auth-card>
+</x-guest-layout>
